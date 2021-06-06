@@ -7,13 +7,14 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <html>
 <head>
     <title>Meals</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Meals Meals Meals</h1>
+    <h1>Meals list</h1>
     <table border="1">
         <tr>
             <th>Date</th>
@@ -23,7 +24,7 @@
     <c:forEach items="${mealsList}" var="meal">
         <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
         <tr class="red-${meal.excess}">
-            <td>${meal.dateTime}</td>
+            <td>${meal.dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE)} &nbsp; ${meal.dateTime.format(DateTimeFormatter.ISO_LOCAL_TIME)}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
         </tr>
