@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -27,19 +26,7 @@ public class MealsUtil {
             new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
     );
 
-    public static List<MealTo> getListWithExcess() {
-        List<Meal> mealsList = new ArrayList<>(meals);
-        Map<LocalDate, Integer> caloriesSumByDate = mealsList.stream()
-                .collect(
-                        Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
-                );
-
-        return mealsList.stream()
-                .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > CALORIES_LIMIT))
-                .collect(Collectors.toList());
-    }
-
-    public static List<MealTo> filteredByStreams(List<Meal> meals, LocalTime startTime, LocalTime endTime) {
+    public static List<MealTo> filteredByStreams(List<Meal> meals, LocalTime startTime, LocalTime endTime, int caloriesLimit) {
         Map<LocalDate, Integer> caloriesSumByDate = meals.stream()
                 .collect(
                         Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
@@ -47,11 +34,15 @@ public class MealsUtil {
 
         return meals.stream()
                 .filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime))
-                .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > CALORIES_LIMIT))
+                .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > caloriesLimit))
                 .collect(Collectors.toList());
     }
 
     private static MealTo createTo(Meal meal, boolean excess) {
         return new MealTo(meal.getDateTime(), meal.getDescription(), meal.getCalories(), excess);
+    }
+
+    public static List<Meal> getMeals() {
+        return meals;
     }
 }
