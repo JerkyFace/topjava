@@ -14,21 +14,28 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Meals list</h1>
-    <table border="1">
-        <tr>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Calories</th>
-        </tr>
+<h1>Meals list</h1>
+<table border="1">
+    <tr>
+        <td colspan="5"><a href="meals?action=create">Add new record</a></td>
+    </tr>
+    <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Calories</th>
+        <td colspan="2"></td>
+    </tr>
     <c:forEach items="${mealsList}" var="meal">
         <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
         <tr class="red-${meal.excess}">
-            <td>${meal.dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE)} &nbsp; ${meal.dateTime.format(DateTimeFormatter.ISO_LOCAL_TIME)}</td>
+            <td>${meal.dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE)}
+                &nbsp; ${meal.dateTime.format(DateTimeFormatter.ISO_LOCAL_TIME)}</td>
             <td>${meal.description}</td>
             <td>${meal.calories}</td>
+            <td>Update</td>
+            <td>Delete</td>
         </tr>
     </c:forEach>
-    </table>
+</table>
 </body>
 </html>
